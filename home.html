@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Widget</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="box">
+        <div class="wave wave-one"></div>
+        <div class="wave wave-two"></div>
+        <div class="wave wave-three"></div>
+        <div id="weathercon">
+            <!-- Initially, place a default icon -->
+            <i class="fas fa-sun" style="color:white;"></i>
+        </div>
+        <div class="info">
+            <h2 class="location">
+                <i class="fas fa-street-view" style="color:#fff;"></i> {%location%}, {%country%}
+            </h2>
+            <p id="date">FRI | JUNE 27 | 9:50 AM</p>
+            <h1 class="temp">{%tempval%}°C</h1>
+            <h3 class="tempmin_max">Min {%tempmin%}°C | Max {%tempmax%}°C</h3>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const currDate = document.querySelector("#date");
+            let weathercon = document.getElementById("weathercon");
+
+            const tempStatus = "{%tempStatus%}";
+            if (tempStatus === "Clear") {
+                weathercon.innerHTML = "<i class='fas fa-sun' style='color:#fff;'></i>";
+            } else if (tempStatus === "Clouds") {
+                weathercon.innerHTML = "<i class='fas fa-cloud' style='color:#fff;'></i>";
+            } else if (tempStatus === "Rainy") {
+                weathercon.innerHTML = "<i class='fas fa-cloud-rain' style='color:#fff;'></i>";
+            } else {
+                weathercon.innerHTML = "<i class='fas fa-cloud' style='color:#fff;'></i>";
+            }
+
+            const getCurrentDay = () => {
+                const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                let currentTime = new Date();
+                return weekday[currentTime.getDay()];
+            };
+
+            const getCurrentDate = () => {
+                const monthYear = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const now = new Date();
+                const month = monthYear[now.getMonth()];
+                const day = now.getDate();
+                const year = now.getFullYear();
+                let hours = now.getHours();
+                let mins = now.getMinutes();
+                let periods = "AM";
+
+                if (hours > 11) {
+                    periods = "PM";
+                    if (hours > 12) {
+                        hours -= 12;
+                    }
+                }
+
+                if (mins < 10) {
+                    mins = "0" + mins;
+                }
+
+                return `${month} ${day} | ${hours}:${mins} ${periods}`;
+            };
+
+            currDate.innerHTML = `${getCurrentDay()} | ${getCurrentDate()}`;
+        });
+    </script>
+</body>
+</html>
